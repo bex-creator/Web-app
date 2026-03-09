@@ -38,6 +38,7 @@
             </div>
             <div class="hidden md:flex gap-8 text-sm font-medium">
                 <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
+                <a href="#services" class="hover:text-cyan-400 transition-colors">What I Do</a>
                 <a href="#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
                 <a href="#skills" class="hover:text-cyan-400 transition-colors">Skills</a>
             </div>
@@ -83,6 +84,45 @@
         </div>
     </header>
 
+    <!-- --- WHAT I DO SECTION --- -->
+    <section class="py-24 relative z-10" id="services">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">What I Do</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Combining physical hardware with digital interfaces to create complete, interactive systems.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-emerald-500/30 transition-colors group">
+                    <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Embedded Systems</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Writing efficient C++ and Python code for microcontrollers like Arduino and ESP32 to interact with the physical world through sensors and motors.</p>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-cyan-500/30 transition-colors group">
+                    <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform">
+                        <i data-lucide="layout" class="w-6 h-6 text-cyan-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Web Development</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Designing and coding responsive, modern websites using HTML, CSS, and modern frameworks to build dashboards for my hardware projects.</p>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-rose-500/30 transition-colors group">
+                    <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center mb-6 border border-rose-500/20 group-hover:scale-110 transition-transform">
+                        <i data-lucide="settings" class="w-6 h-6 text-rose-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Hardware Prototyping</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Wiring circuits, breadboarding new ideas, and troubleshooting electronic components to bring digital logic into physical reality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- --- PROJECTS SECTION --- -->
     <section class="py-24 bg-slate-900/50" id="projects">
         <div class="max-w-6xl mx-auto px-6">
@@ -98,6 +138,7 @@
                     <button data-filter="Arduino" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">Arduino</button>
                     <button data-filter="ESP32" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">ESP32</button>
                     <button data-filter="Raspberry Pi" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">Raspberry Pi</button>
+                    <button data-filter="Web" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">Web / HTML</button>
                 </div>
             </div>
 
@@ -132,22 +173,22 @@
                     </div>
                 </div>
 
-                <!-- ESP32 Project -->
-                <div data-category="ESP32" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="h-1 w-full bg-gradient-to-r from-cyan-400 to-blue-500"></div>
+                <!-- NEW PROJECT: Web Portfolio -->
+                <div data-category="Web" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                    <div class="h-1 w-full bg-gradient-to-r from-purple-400 to-fuchsia-500"></div>
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div class="p-2.5 bg-slate-800 rounded-xl">
-                                <i data-lucide="wifi" class="w-6 h-6 text-blue-400"></i>
+                                <i data-lucide="monitor" class="w-6 h-6 text-fuchsia-400"></i>
                             </div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">ESP32</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Web / HTML</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Your ESP32 Project</h3>
-                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">Describe your actual ESP32 project here. Did you use WiFi? WebSockets? Bluetooth?</p>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Personal Portfolio</h3>
+                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">A fully responsive, dark-themed portfolio website built to showcase my hardware and software projects. Hosted live on GitHub Pages.</p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">IoT</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">WiFi</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">C++</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">HTML</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Tailwind CSS</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">JavaScript</span>
                         </div>
                         <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
                             <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
@@ -160,22 +201,50 @@
                     </div>
                 </div>
 
-                <!-- Raspberry Pi Project -->
-                <div data-category="Raspberry Pi" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="h-1 w-full bg-gradient-to-r from-rose-400 to-red-500"></div>
+                <!-- NEW PROJECT: Arduino -->
+                <div data-category="Arduino" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                    <div class="h-1 w-full bg-gradient-to-r from-teal-400 to-emerald-500"></div>
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-4">
                             <div class="p-2.5 bg-slate-800 rounded-xl">
-                                <i data-lucide="server" class="w-6 h-6 text-rose-400"></i>
+                                <i data-lucide="lightbulb" class="w-6 h-6 text-emerald-400"></i>
                             </div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Raspberry Pi</span>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Arduino</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Your Raspberry Pi Project</h3>
-                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">Describe your actual Raspberry Pi project here. Is it a server, a robot, or a retro console?</p>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">LED Matrix Visualizer</h3>
+                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">An addressable RGB LED matrix that reacts to sound and music using a microphone sensor and FastLED libraries.</p>
                         <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Linux</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Python</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Networking</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">C++</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">LEDs</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">FastLED</span>
+                        </div>
+                        <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
+                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
+                                <i data-lucide="code-2" class="w-4 h-4"></i> Source
+                            </button>
+                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
+                                <i data-lucide="external-link" class="w-4 h-4"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW PROJECT: ESP32 -->
+                <div data-category="ESP32" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+                    <div class="h-1 w-full bg-gradient-to-r from-cyan-400 to-blue-500"></div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-2.5 bg-slate-800 rounded-xl">
+                                <i data-lucide="gamepad-2" class="w-6 h-6 text-blue-400"></i>
+                            </div>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">ESP32</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Bluetooth Game Controller</h3>
+                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">A custom-built wireless gamepad using the ESP32's built-in Bluetooth Low Energy (BLE) capabilities to connect to a PC.</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Bluetooth</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Hardware</span>
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">C++</span>
                         </div>
                         <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
                             <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
@@ -202,8 +271,7 @@
                 <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Raspberry Pi</div>
                 <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">C++</div>
                 <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Python</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Soldering</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Circuit Design</div>
+                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">HTML</div>
             </div>
         </div>
     </section>
@@ -218,7 +286,7 @@
             <p class="text-slate-400 max-w-md mb-8">
                 Currently open for collaborations, learning new things, or just a chat about microcontrollers.
             </p>
-            <a href="mailto:bexlebeau30@students.cumberlandschools.org" class="px-6 sm:px-8 py-4 rounded-full bg-white text-slate-950 font-bold hover:bg-slate-200 transition-all mb-16 text-sm sm:text-base break-all sm:break-normal max-w-full">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bexlebeau30@students.cumberlandschools.org" target="_blank" rel="noreferrer" class="px-6 sm:px-8 py-4 rounded-full bg-white text-slate-950 font-bold hover:bg-slate-200 transition-all mb-16 text-sm sm:text-base break-all sm:break-normal max-w-full">
                 bexlebeau30@students.cumberlandschools.org
             </a>
 
