@@ -1,357 +1,143 @@
- <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bex Lebeau | Hardware & Coding Portfolio</title>
-    
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Load Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web OS - Cloud Browser</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121214; color: #e1e1e6; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-    <style>
-        body {
-            background-color: #020617; /* slate-950 */
-            color: #cbd5e1; /* slate-300 */
-        }
-        /* Custom selection color */
-        ::selection {
-            background-color: rgba(6, 182, 212, 0.3); /* cyan-500/30 */
-        }
-        
-        /* Smooth fade animation for filtering */
-        .project-card {
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-    </style>
+    /* Top OS Bar */
+    header { height: 50px; background: #1a1a1e; border-bottom: 1px solid #29292e; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; gap: 12px; }
+    .brand { font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; color: #a8a8b3; }
+    .brand span { color: #8257e5; font-weight: 700; }
+
+    /* Controls in Top Bar */
+    .controls { display: flex; align-items: center; gap: 10px; }
+    input[type="password"], input[type="text"] { background: #121214; border: 1px solid #323238; color: #e1e1e6; padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; width: 220px; outline: none; transition: border 0.2s; }
+    input:focus { border-color: #8257e5; }
+    
+    button { background: #8257e5; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    button:hover { background: #996dff; }
+    button.stop { background: #e83f5b; }
+    button.stop:hover { background: #ff6b84; }
+
+    /* Timer Display */
+    .timer-box { background: #202024; border: 1px solid #29292e; padding: 4px 10px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; color: #04d361; display: flex; align-items: center; gap: 6px; }
+    .timer-box.low { color: #fba94c; }
+    .timer-box.empty { color: #e83f5b; }
+
+    /* Main Viewport */
+    main { flex: 1; position: relative; background: #09090a; }
+    iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* Standby Screen */
+    .placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; background: #121214; }
+    .placeholder h1 { font-size: 1.5rem; margin-bottom: 8px; }
+    .placeholder p { color: #a8a8b3; max-width: 450px; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; }
+    .card { background: #1a1a1e; border: 1px solid #29292e; border-radius: 8px; padding: 20px; text-align: left; max-width: 420px; width: 100%; }
+    .card h3 { font-size: 0.95rem; margin-bottom: 8px; color: #8257e5; }
+    .card ol { padding-left: 18px; color: #a8a8b3; font-size: 0.85rem; line-height: 1.6; }
+  </style>
 </head>
-<body class="min-h-screen font-sans">
+<body>
 
-    <!-- --- NAVIGATION (Glassmorphism) --- -->
-    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-2 text-white font-bold text-xl tracking-tight">
-                <i data-lucide="terminal" class="w-6 h-6 text-cyan-400"></i>
-                <span>Bex<span class="text-cyan-400">.dev</span></span>
-            </div>
-            <div class="hidden md:flex gap-8 text-sm font-medium">
-                <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
-                <a href="#services" class="hover:text-cyan-400 transition-colors">What I Do</a>
-                <a href="#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
-                <a href="#skills" class="hover:text-cyan-400 transition-colors">Skills</a>
-            </div>
-            <a href="#contact" class="px-5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-medium transition-all hover:border-cyan-400/50">
-                Let's Talk
-            </a>
-        </div>
-    </nav>
+  <header>
+    <div class="brand"><span>Web OS</span> Hyperbeam Browser</div>
 
-    <!-- --- HERO SECTION --- -->
-    <header class="relative pt-40 pb-20 overflow-hidden" id="about">
-        <!-- Background glow effects -->
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[100px] -z-10"></div>
-        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] -z-10"></div>
+    <div class="controls">
+      <input type="password" id="apiKeyInput" placeholder="Enter Hyperbeam API Key...">
+      <button id="sessionBtn" onclick="toggleSession()">Start Session</button>
+      
+      <div class="timer-box" id="timerBox">
+        ⏱️ <span id="timerText">07:00:00</span>
+      </div>
+    </div>
+  </header>
 
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-cyan-400 text-sm font-medium mb-8">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-                </span>
-            </div>
-            
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-                Bridging the gap between <br class="hidden md:block" />
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Software</span> & <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Hardware</span>.
-            </h1>
-            
-            <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-400 mb-10 leading-relaxed">
-                I build embedded systems, IoT devices, and full-stack applications. 
-                From soldering custom PCBs to writing high-performance C++ code.
-            </p>
+  <main>
+    <div id="placeholder" class="placeholder">
+      <h1>Cloud Browser Standby</h1>
+      <p>Enter your Hyperbeam API key in the top bar above to start your 7-hour daily cloud session.</p>
+      
+      <div class="card">
+        <h3>How It Works</h3>
+        <ol>
+          <li>Paste your key into the top field and click <strong>Start Session</strong>.</li>
+          <li>Your key is saved locally in your browser so you don't need to re-type it.</li>
+          <li>The 7-hour timer runs only while your browser session is active.</li>
+          <li>Your daily allowance automatically resets at midnight every day.</li>
+        </ol>
+      </div>
+    </div>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#projects" class="w-full sm:w-auto px-8 py-4 rounded-full bg-cyan-500 text-slate-950 font-bold hover:bg-cyan-400 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-                    View Projects <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </a>
-                <a href="https://github.com/bex-creator" target="_blank" rel="noreferrer" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="github" class="w-5 h-5"></i> GitHub Profile
-                </a>
-            </div>
-        </div>
-    </header>
+    <iframe id="browserFrame" style="display: none;" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;"></iframe>
+  </main>
 
-    <!-- --- WHAT I DO SECTION --- -->
-    <section class="py-24 relative z-10" id="services">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">What I Do</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto">Combining physical hardware with digital interfaces to create complete, interactive systems.</p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Service 1 -->
-                <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-emerald-500/30 transition-colors group">
-                    <div class="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
-                        <i data-lucide="cpu" class="w-6 h-6 text-emerald-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Embedded Systems</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Writing efficient C++ and Python code for microcontrollers like Arduino and ESP32 to interact with the physical world through sensors and motors.</p>
-                </div>
+  <script>
+    const DAILY_LIMIT_SECONDS = 7 * 60 * 60; // 7 Hours (25,200s)
+    let timerInterval = null;
+    let isConnected = false;
 
-                <!-- Service 2 -->
-                <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-cyan-500/30 transition-colors group">
-                    <div class="w-12 h-12 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform">
-                        <i data-lucide="layout" class="w-6 h-6 text-cyan-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Web Development</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Designing and coding responsive, modern websites using HTML, CSS, and modern frameworks to build dashboards for my hardware projects.</p>
-                </div>
+    // Check & Reset Daily Allowance
+    function getRemainingSeconds() {
+      const today = new Date().toDateString();
+      const lastReset = localStorage.getItem('hb_last_reset');
 
-                <!-- Service 3 -->
-                <div class="p-8 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-rose-500/30 transition-colors group">
-                    <div class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center mb-6 border border-rose-500/20 group-hover:scale-110 transition-transform">
-                        <i data-lucide="settings" class="w-6 h-6 text-rose-400"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-3">Hardware Prototyping</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed">Wiring circuits, breadboarding new ideas, and troubleshooting electronic components to bring digital logic into physical reality.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+      if (lastReset !== today) {
+        localStorage.setItem('hb_last_reset', today);
+        localStorage.setItem('hb_used_seconds', '0');
+      }
 
-    <!-- --- PROJECTS SECTION --- -->
-    <section class="py-24 bg-slate-900/50" id="projects">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Featured Builds</h2>
-                    <p class="text-slate-400 max-w-xl">A selection of my recent hardware and embedded software projects.</p>
-                </div>
-                
-                <!-- Filter Pills -->
-                <div class="flex flex-wrap gap-2" id="filter-container">
-                    <button data-filter="All" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-slate-800 text-white border border-slate-600 shadow-sm">All</button>
-                    <button data-filter="Arduino" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">Arduino</button>
-                    <button data-filter="ESP32" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">ESP32</button>
-                    <button data-filter="Raspberry Pi" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">Raspberry Pi</button>
-                    <button data-filter="Web" class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-transparent text-slate-400 border border-slate-800 hover:border-slate-600 hover:text-slate-200">Web / HTML</button>
-                </div>
-            </div>
+      const used = parseInt(localStorage.getItem('hb_used_seconds') || '0', 10);
+      return Math.max(0, DAILY_LIMIT_SECONDS - used);
+    }
 
-            <!-- Project Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projects-grid">
-                
-                <!-- Arduino Project -->
-                <div data-category="Arduino" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="h-1 w-full bg-gradient-to-r from-teal-400 to-emerald-500"></div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-2.5 bg-slate-800 rounded-xl">
-                                <i data-lucide="cpu" class="w-6 h-6 text-emerald-400"></i>
-                            </div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Arduino</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Your Arduino Project</h3>
-                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">Describe your actual Arduino project here. What sensors did you use? What does it do?</p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">C++</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Sensors</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Hardware</span>
-                        </div>
-                        <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="code-2" class="w-4 h-4"></i> Source
-                            </button>
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="external-link" class="w-4 h-4"></i> Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    function formatTime(sec) {
+      const h = Math.floor(sec / 3600).toString().padStart(2, '0');
+      const m = Math.floor((sec % 3600) / 60).toString().padStart(2, '0');
+      const s = (sec % 60).toString().padStart(2, '0');
+      return `${h}:${m}:${s}`;
+    }
 
-                <!-- NEW PROJECT: Web Portfolio -->
-                <div data-category="Web" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="h-1 w-full bg-gradient-to-r from-purple-400 to-fuchsia-500"></div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-2.5 bg-slate-800 rounded-xl">
-                                <i data-lucide="monitor" class="w-6 h-6 text-fuchsia-400"></i>
-                            </div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Web / HTML</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Personal Portfolio</h3>
-                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">A fully responsive, dark-themed portfolio website built to showcase my hardware and software projects. Hosted live on GitHub Pages.</p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">HTML</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Tailwind CSS</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">JavaScript</span>
-                        </div>
-                        <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="code-2" class="w-4 h-4"></i> Source
-                            </button>
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="external-link" class="w-4 h-4"></i> Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    function updateTimerDisplay() {
+      const remaining = getRemainingSeconds();
+      const timerText = document.getElementById('timerText');
+      const timerBox = document.getElementById('timerBox');
 
-                <!-- NEW PROJECT: Arduino -->
-                <div data-category="Arduino" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="h-1 w-full bg-gradient-to-r from-teal-400 to-emerald-500"></div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-2.5 bg-slate-800 rounded-xl">
-                                <i data-lucide="lightbulb" class="w-6 h-6 text-emerald-400"></i>
-                            </div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Arduino</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">LED Matrix Visualizer</h3>
-                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">An addressable RGB LED matrix that reacts to sound and music using a microphone sensor and FastLED libraries.</p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">C++</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">LEDs</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">FastLED</span>
-                        </div>
-                        <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="code-2" class="w-4 h-4"></i> Source
-                            </button>
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="external-link" class="w-4 h-4"></i> Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      timerText.innerText = formatTime(remaining);
 
-                <!-- NEW PROJECT: ESP32 -->
-                <div data-category="ESP32" class="project-card group relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-                    <div class="h-1 w-full bg-gradient-to-r from-cyan-400 to-blue-500"></div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-2.5 bg-slate-800 rounded-xl">
-                                <i data-lucide="gamepad-2" class="w-6 h-6 text-blue-400"></i>
-                            </div>
-                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">ESP32</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Bluetooth Game Controller</h3>
-                        <p class="text-slate-400 text-sm mb-6 line-clamp-3">A custom-built wireless gamepad using the ESP32's built-in Bluetooth Low Energy (BLE) capabilities to connect to a PC.</p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Bluetooth</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">Hardware</span>
-                            <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-slate-800 text-slate-300">C++</span>
-                        </div>
-                        <div class="flex items-center gap-4 pt-4 border-t border-slate-800/50">
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="code-2" class="w-4 h-4"></i> Source
-                            </button>
-                            <button class="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                                <i data-lucide="external-link" class="w-4 h-4"></i> Details
-                            </button>
-                        </div>
-                    </div>
-                </div>
+      if (remaining <= 0) {
+        timerBox.className = 'timer-box empty';
+      } else if (remaining <= 1800) { // < 30 mins
+        timerBox.className = 'timer-box low';
+      } else {
+        timerBox.className = 'timer-box';
+      }
+    }
 
-            </div>
-        </div>
-    </section>
+    async function toggleSession() {
+      if (isConnected) {
+        stopSession();
+        return;
+      }
 
-    <!-- --- SKILLS SECTION --- -->
-    <section class="py-24 relative overflow-hidden" id="skills">
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-12">Technical Arsenal</h2>
-            <div class="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Arduino</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">ESP32</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Raspberry Pi</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">C++</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">Python</div>
-                <div class="px-6 py-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium hover:border-cyan-500/50 hover:bg-slate-800 hover:text-white transition-all cursor-default">HTML</div>
-            </div>
-        </div>
-    </section>
+      const apiKey = document.getElementById('apiKeyInput').value.trim();
+      if (!apiKey) {
+        alert("Please paste your Hyperbeam API key into the top input box.");
+        return;
+      }
 
-    <!-- --- FOOTER / CONTACT --- -->
-    <footer class="bg-slate-950 border-t border-slate-900 pt-20 pb-10" id="contact">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
-            <div class="w-16 h-16 bg-cyan-500/10 rounded-2xl flex items-center justify-center mb-6 border border-cyan-500/20">
-                <i data-lucide="mail" class="w-8 h-8 text-cyan-400"></i>
-            </div>
-            <h2 class="text-3xl font-bold text-white mb-4">Let's build something.</h2>
-            <p class="text-slate-400 max-w-md mb-8">
-                Currently open for collaborations, learning new things, or just a chat about microcontrollers.
-            </p>
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=bexlebeau30@students.cumberlandschools.org" target="_blank" rel="noreferrer" class="px-6 sm:px-8 py-4 rounded-full bg-white text-slate-950 font-bold hover:bg-slate-200 transition-all mb-16 text-sm sm:text-base break-all sm:break-normal max-w-full">
-                bexlebeau30@students.cumberlandschools.org
-            </a>
+      const remaining = getRemainingSeconds();
+      if (remaining <= 0) {
+        alert("Daily limit reached! You have used your 7 hours for today. Your limit resets at midnight.");
+        return;
+      }
 
-            <div class="w-full flex flex-col md:flex-row items-center justify-between pt-8 border-t border-slate-800/50 text-slate-500 text-sm">
-                <p id="copyright-year">© 2024 Bex Lebeau. All rights reserved.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="https://github.com/bex-creator" target="_blank" rel="noreferrer" class="hover:text-white transition-colors">GitHub</a>
-                    <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
-                    <a href="#" class="hover:text-white transition-colors">Twitter</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+      // Save key locally on device
+      localStorage.setItem('hb_api_key', apiKey);
 
-    <!-- --- JAVASCRIPT LOGIC --- -->
-    <script>
-        // 1. Render Icons
-        lucide.createIcons();
-
-        // 2. Set Dynamic Year
-        document.getElementById('copyright-year').textContent = `© ${new Date().getFullYear()} Bex Lebeau. All rights reserved.`;
-
-        // 3. Handle Sticky Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 20) {
-                navbar.classList.add('bg-slate-950/80', 'backdrop-blur-md', 'border-b', 'border-white/10', 'shadow-lg');
-                navbar.classList.remove('bg-transparent');
-            } else {
-                navbar.classList.remove('bg-slate-950/80', 'backdrop-blur-md', 'border-b', 'border-white/10', 'shadow-lg');
-                navbar.classList.add('bg-transparent');
-            }
-        });
-
-        // 4. Handle Project Filtering
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const projectCards = document.querySelectorAll('.project-card');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove active styling from all buttons
-                filterBtns.forEach(b => {
-                    b.classList.remove('bg-slate-800', 'text-white', 'border-slate-600', 'shadow-sm');
-                    b.classList.add('bg-transparent', 'text-slate-400', 'border-slate-800');
-                });
-                
-                // Add active styling to clicked button
-                btn.classList.add('bg-slate-800', 'text-white', 'border-slate-600', 'shadow-sm');
-                btn.classList.remove('bg-transparent', 'text-slate-400', 'border-slate-800');
-
-                // Get the filter category
-                const filterValue = btn.getAttribute('data-filter');
-
-                // Show/Hide cards
-                projectCards.forEach(card => {
-                    const category = card.getAttribute('data-category');
-                    if (filterValue === 'All' || category === filterValue) {
-                        card.style.display = 'block';
-                        setTimeout(() => card.style.opacity = '1', 10);
-                    } else {
-                        card.style.opacity = '0';
-                        setTimeout(() => card.style.display = 'none', 300); // Wait for fade out
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+      const sessionBtn = document.getElementById('sessionBtn');
+      sessionBtn.innerText = "Connecting...";
+      sessionBtn
